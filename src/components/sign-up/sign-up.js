@@ -1,5 +1,4 @@
-import { useState, useContext } from 'react';
-import { UserContext } from '../../contexts/user.context';
+import { useState } from 'react';
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
@@ -18,10 +17,9 @@ const defaultFormFields = {
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
-  const { setCurrentUser } = useContext(UserContext);
 
   const resetFormFields = () => {
-    alert('Signed up successfully!');
+    alert('Signed Up Successfully!');
     setFormFields(defaultFormFields);
   };
 
@@ -38,9 +36,6 @@ const SignUpForm = () => {
         email,
         password
       );
-
-      setCurrentUser(user);
-
       await createUserDocumentFromAuth(user, { displayName });
       resetFormFields();
     } catch (error) {
@@ -69,6 +64,7 @@ const SignUpForm = () => {
           onChange={handleChange}
           name="displayName"
           value={displayName}
+          maxLength="50"
         />
         <FormInput
           label="Email"
@@ -77,6 +73,7 @@ const SignUpForm = () => {
           onChange={handleChange}
           name="email"
           value={email}
+          maxLength="50"
         />
         <FormInput
           label="Password"
@@ -85,8 +82,8 @@ const SignUpForm = () => {
           onChange={handleChange}
           name="password"
           value={password}
-          minlength="6"
-          maxlength="14"
+          minLength="6"
+          maxLength="14"
         />
         <FormInput
           label="Confirm Password"
@@ -95,6 +92,7 @@ const SignUpForm = () => {
           onChange={handleChange}
           name="confirmPassword"
           value={confirmPassword}
+          maxLength="14"
         />
         <Button type="submit">Sign Up</Button>
       </form>

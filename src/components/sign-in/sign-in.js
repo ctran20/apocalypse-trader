@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import {
   signInWithGooglePopup,
   createUserDocumentFromAuth,
@@ -6,8 +6,6 @@ import {
 } from '../../utils/firebase/firebase.utils';
 import Button from '../button/button';
 import FormInput from '../form-input/form-input';
-
-import { UserContext } from '../../contexts/user.context';
 
 import './sign-in.styles.scss';
 
@@ -19,16 +17,13 @@ const defaultFormFields = {
 const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
-  const { setCurrentUser } = useContext(UserContext);
 
   const resetFormFields = () => {
-    alert('Signed up successfully!');
     setFormFields(defaultFormFields);
   };
 
   const signInGoogleUser = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
   };
 
   const handleSubmit = async (event) => {
@@ -39,8 +34,6 @@ const SignInForm = () => {
         email,
         password
       );
-      setCurrentUser(user);
-
       resetFormFields();
     } catch (error) {
       switch (error.code) {
@@ -72,6 +65,7 @@ const SignInForm = () => {
           required
           onChange={handleChange}
           name="email"
+          maxLength="40"
           value={email}
         />
         <FormInput
@@ -81,8 +75,7 @@ const SignInForm = () => {
           onChange={handleChange}
           name="password"
           value={password}
-          minlength="6"
-          maxlength="14"
+          maxLength="14"
         />
 
         <div className="buttons-container">
